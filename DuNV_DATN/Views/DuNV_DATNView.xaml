@@ -1,0 +1,22 @@
+﻿<Window
+    x:Class="DuNV_DATN.Views.DuNV_DATNView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:viewModel="clr-namespace:DuNV_DATN.ViewModels"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance viewModel:DuNV_DATNViewModel}"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    Title="DuNV_DATN"
+    Height="450"
+    Width="800">
+    <Grid>
+        <TextBlock
+            Text="DuNV_DATN"
+            FontSize="60"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" />
+    </Grid>
+</Window>

@@ -1,0 +1,11 @@
+﻿<RevitAddIns>
+    <AddIn Type="Command">
+        <Name>DuNV_DATN</Name>
+        <Assembly>DuNV_DATN/DuNV_DATN.dll</Assembly>
+        <AddInId>DC4DE586-D94B-41D3-B72C-28C60EC5C42A</AddInId>
+        <FullClassName>DuNV_DATN.Commands.Command</FullClassName>
+        <Text>DuNV_DATN</Text>
+        <VendorId>Development</VendorId>
+        <VendorDescription></VendorDescription>
+    </AddIn>
+</RevitAddIns>
