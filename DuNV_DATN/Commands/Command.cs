@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using DuNV_DATN.ViewModels;
 using DuNV_DATN.Views;
+using HcBimUtils.DocumentUtils;
 using Nice3point.Revit.Toolkit.External;
 
 namespace DuNV_DATN.Commands
@@ -11,8 +12,9 @@ namespace DuNV_DATN.Commands
 	{
 		public override void Execute()
 		{
-			var viewModel = new DuNV_DATNViewModel();
-			var view = new DuNV_DATNView(viewModel);
+			AC.GetInformation(UiDocument);
+			var view = new DuNV_DATNView();
+			var viewModel = new DuNV_DATNViewModel(view);
 			view.ShowDialog();
 		}
 	}

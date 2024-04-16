@@ -4,10 +4,9 @@ namespace DuNV_DATN.Views
 {
 	public partial class DuNV_DATNView
 	{
-		public DuNV_DATNView(DuNV_DATNViewModel viewModel)
+		public DuNV_DATNView()
 		{
 			InitializeComponent();
-			DataContext = viewModel;
 		}
 	}
 }
