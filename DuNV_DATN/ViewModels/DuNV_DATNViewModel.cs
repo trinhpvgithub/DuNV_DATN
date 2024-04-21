@@ -57,7 +57,7 @@ namespace DuNV_DATN.ViewModels
 				OnPropertyChanged();
 			}
 		}
-		public Element Column {  get; set; }
+		public Element Column { get; set; }
 		public List<View> Viewplan { get; set; }
 		public RelayCommand Ok { get; set; }
 		public RelayCommand Cancel { get; set; }
@@ -70,6 +70,7 @@ namespace DuNV_DATN.ViewModels
 			MainView.DataContext = this;
 			GetData();
 			PickColumn = new RelayCommand(x => Pick());
+			Ok = new RelayCommand(x => ButtonOk());
 		}
 		public void GetData()
 		{
@@ -87,7 +88,7 @@ namespace DuNV_DATN.ViewModels
 			SelectedViewTemplate = ViewTemplate.FirstOrDefault();
 			Scale = new List<string> { "1:50", "1:100", "1:150", "1:200" };
 			SelectedScale = Scale.FirstOrDefault();
-			Section = new List<int> { 2,3 };
+			Section = new List<int> { 2, 3 };
 			SeclectSection = Section.FirstOrDefault();
 		}
 		public void Pick()
@@ -97,18 +98,22 @@ namespace DuNV_DATN.ViewModels
 				.OfCategory(BuiltInCategory.OST_StructuralColumns)
 				.Cast<Element>()
 				.ToList();
-			if(columns.Count>0)
+			if (columns.Count > 0)
 			{
 				MainView.Hide();
 				Column = Utils.PickColumn();
-				ColumnName=Column.Name;
+				ColumnName = Column.Name;
 				OnPropertyChanged(nameof(ColumnName));
 				MainView.Show();
-			}	
+			}
 			else
 			{
 				MessageBox.Show("Model đang không có cái cột nào", "Warning");
-			}	
+			}
+		}
+		public void ButtonOk()
+		{
+			SectionColumn.NewSection(AC.Document, Column);
 		}
 		#endregion
 	}

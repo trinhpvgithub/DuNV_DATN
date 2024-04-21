@@ -118,7 +118,8 @@
          <Grid Grid.Column="1"
                Margin="10">
             <Button Content="Draw"
-                    Height="30">
+                    Height="30"
+                    Command="{Binding Ok}">
             </Button>
          </Grid>
          <Grid Grid.Column="2"
