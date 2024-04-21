@@ -39,12 +39,7 @@ namespace DuNV_DATN.Core
 				.Cast<ViewFamilyType>()
 				.FirstOrDefault<ViewFamilyType>(y =>
 				ViewFamily.Section == y.ViewFamily);
-			using (var trans = new Transaction(document, "aa"))
-			{
-				trans.Start();
-				var viewSection = ViewSection.CreateSection(document, vft.Id, bbox);
-				trans.Commit();
-			}
+			var viewSection = ViewSection.CreateSection(document, vft.Id, bbox);
 		}
 	}
 }

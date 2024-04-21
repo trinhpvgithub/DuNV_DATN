@@ -15,7 +15,7 @@ namespace DuNV_DATN.Commands
 			AC.GetInformation(UiDocument);
 			var view = new DuNV_DATNView();
 			var viewModel = new DuNV_DATNViewModel(view);
-			view.ShowDialog();
+			viewModel.ShowView();
 		}
 	}
 }

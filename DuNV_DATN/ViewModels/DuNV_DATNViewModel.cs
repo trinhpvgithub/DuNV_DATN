@@ -66,11 +66,12 @@ namespace DuNV_DATN.ViewModels
 		#region core
 		public DuNV_DATNViewModel(DuNV_DATNView v)
 		{
-			MainView = v;
 			MainView.DataContext = this;
+			MainView = v;
 			GetData();
 			PickColumn = new RelayCommand(x => Pick());
 			Ok = new RelayCommand(x => ButtonOk());
+			Cancel=new RelayCommand(x => ButtonCancel());
 		}
 		public void GetData()
 		{
@@ -108,12 +109,25 @@ namespace DuNV_DATN.ViewModels
 			}
 			else
 			{
-				MessageBox.Show("Model đang không có cái cột nào", "Warning");
+				IO.ShowWarning("Model đang không có cái cột nào");
 			}
 		}
 		public void ButtonOk()
 		{
-			SectionColumn.NewSection(AC.Document, Column);
+			using (Transaction ts=new Transaction(AC.Document,"aa"))
+			{
+				ts.Start();
+				SectionColumn.NewSection(AC.Document, Column);
+				ts.Commit();
+			}
+		}
+		public void ShowView()
+		{
+			MainView.ShowDialog();
+		}
+		public void ButtonCancel()
+		{
+			MainView?.Close();
 		}
 		#endregion
 	}
