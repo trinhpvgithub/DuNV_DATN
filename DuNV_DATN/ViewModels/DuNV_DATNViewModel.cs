@@ -66,8 +66,8 @@ namespace DuNV_DATN.ViewModels
 		#region core
 		public DuNV_DATNViewModel(DuNV_DATNView v)
 		{
-			MainView.DataContext = this;
 			MainView = v;
+			MainView.DataContext = this;
 			GetData();
 			PickColumn = new RelayCommand(x => Pick());
 			Ok = new RelayCommand(x => ButtonOk());
@@ -105,7 +105,7 @@ namespace DuNV_DATN.ViewModels
 				Column = Utils.PickColumn();
 				ColumnName = Column.Name;
 				OnPropertyChanged(nameof(ColumnName));
-				MainView.Show();
+				MainView.ShowDialog();
 			}
 			else
 			{
@@ -117,7 +117,9 @@ namespace DuNV_DATN.ViewModels
 			using (Transaction ts=new Transaction(AC.Document,"aa"))
 			{
 				ts.Start();
-				SectionColumn.NewSection(AC.Document, Column);
+				SectionColumn.NewSection(AC.Document, Column,1);
+				SectionColumn.NewSection(AC.Document, Column,0);
+				SectionColumn.NewSection(AC.Document, Column,2);
 				ts.Commit();
 			}
 		}
