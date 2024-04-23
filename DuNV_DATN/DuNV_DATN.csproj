@@ -55,6 +55,10 @@
         <StartProgram>C:\Program Files\Autodesk\Revit $(RevitVersion)\Revit.exe</StartProgram>
         <StartArguments>/language ENG</StartArguments>
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="Resources\Icons\column_16.png" />
+      <None Remove="Resources\Icons\column_32.png" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="HcBimUtils" Version="2020.0.11" />
@@ -73,7 +77,15 @@
 
     <ItemGroup>
         <Folder Include="ViewModels\Objects" />
-        <Folder Include="Resources" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\Icons\column_16.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="Resources\Icons\column_32.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
     <Target Name="CopyFiles" AfterTargets="CoreBuild">
@@ -94,7 +106,7 @@
             <AddinFiles Include="$(RootDir)**\*.*" />
         </ItemGroup>
 
-        <!--<Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" />-->
+        <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" />
     </Target>
 
     <Target Name="DeleteFiles" AfterTargets="Clean">
