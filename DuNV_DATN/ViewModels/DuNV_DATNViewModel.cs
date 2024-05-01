@@ -114,14 +114,17 @@ namespace DuNV_DATN.ViewModels
 		}
 		public void ButtonOk()
 		{
+			List<Element> elements = new List<Element>();
 			using (Transaction ts=new Transaction(AC.Document,"aa"))
 			{
 				ts.Start();
-				SectionColumn.NewSection(AC.Document, Column,1);
-				SectionColumn.NewSection(AC.Document, Column,0);
-				SectionColumn.NewSection(AC.Document, Column,2);
+				elements.Add(SectionColumn.NewSection(AC.Document, Column,1));
+				elements.Add(SectionColumn.NewSection(AC.Document, Column,0));
+				elements.Add(SectionColumn.NewSection(AC.Document, Column, 2));
 				ts.Commit();
 			}
+			elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); }) ;	
+			CreateSheet.NewSheet(AC.Document, SelectedTitleBlock.Id, elements, "MC-cot");
 		}
 		public void ShowView()
 		{

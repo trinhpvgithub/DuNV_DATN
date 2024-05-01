@@ -12,7 +12,7 @@ namespace DuNV_DATN.Core
 {
 	public class SectionColumn
 	{
-		public static void NewSection(Document document, Element element,int vitri)
+		public static Element NewSection(Document document, Element element,int vitri)
 		{
 			XYZ max = new XYZ();
 			XYZ min = new XYZ();
@@ -40,10 +40,10 @@ namespace DuNV_DATN.Core
 			bbox.Max = p.FirstOrDefault();
 			bbox.Min = p.LastOrDefault();
 			var tran = Transform.Identity;
-			tran.Origin = (bbox.Max+bbox.Min)/2;
-			tran.BasisX = dirr.Normalize();
-			tran.BasisY = XYZ.BasisZ;
-			tran.BasisZ = dirr.CrossProduct(XYZ.BasisZ);
+			//tran.Origin = (bbox.Max+bbox.Min)/2;
+			tran.BasisX = XYZ.BasisX;
+			tran.BasisY = XYZ.BasisY;
+			tran.BasisZ = XYZ.BasisZ;
 			bbox.Transform = tran;
 			ViewFamilyType vft
 				= new FilteredElementCollector(document)
@@ -51,15 +51,17 @@ namespace DuNV_DATN.Core
 				.Cast<ViewFamilyType>()
 				.FirstOrDefault<ViewFamilyType>(y =>
 				ViewFamily.Section == y.ViewFamily);
-			var viewSection = ViewSection.CreateSection(document, vft.Id, bbox);
+			return ViewSection.CreateSection(document, vft.Id, bbox);
 		}
 		private static List<XYZ> GetBou(XYZ ori,double height,double width,double ele,XYZ dir)
 		{
 			var result=new List<XYZ>();
 			var dirX = dir.CrossProduct(XYZ.BasisZ);
-			var p1=ori.Add(height*2*dir).Add(width*2*dirX);
-			var p2=ori.Add(height*2*-dir).Add(width*2*-dirX);
-			result.Add(p1.Add(ele*XYZ.BasisZ));
+			var p1 = ori.Add(height * 2 * dir).Add(width * 2 * dirX);
+			var p2 = ori.Add(height * 2 * -dir).Add(width * 2 * -dirX);
+			//var p1 = new XYZ(w,h,0);
+			//var p2=new XYZ(-w,-h,-d);
+			result.Add(p1.Add((ele+500.MmToFoot()) * XYZ.BasisZ));
 			result.Add(p2.Add(ele * XYZ.BasisZ));
 			return result;
 		}
