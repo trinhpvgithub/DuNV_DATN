@@ -123,7 +123,12 @@ namespace DuNV_DATN.ViewModels
 				elements.Add(SectionColumn.NewSection(AC.Document, Column, 2));
 				ts.Commit();
 			}
-			elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); }) ;	
+			elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); });
+			elements.ForEach(x =>
+			{
+				AutoTag.CreateTag(AC.Document, x as View);
+
+			});
 			CreateSheet.NewSheet(AC.Document, SelectedTitleBlock.Id, elements, "MC-cot");
 		}
 		public void ShowView()

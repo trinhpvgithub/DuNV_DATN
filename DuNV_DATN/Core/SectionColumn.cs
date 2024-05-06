@@ -65,5 +65,35 @@ namespace DuNV_DATN.Core
 			result.Add(p2.Add(ele * XYZ.BasisZ));
 			return result;
 		}
+		public static Element NewSectionDoc(Document document, Element element, int vitri)
+		{
+			XYZ max = new XYZ();
+			XYZ min = new XYZ();
+			var p = new List<XYZ>();
+			var origin = (element.Location as LocationPoint).Point;
+			var leght = element.GetParameter(BuiltInParameter.INSTANCE_LENGTH_PARAM).AsDouble();
+			var height = document.GetElement(element.GetTypeId()).GetParameter("h").AsDouble();
+			var width = document.GetElement(element.GetTypeId()).GetParameter("b").AsDouble();
+			var dirr = (element as FamilyInstance).FacingOrientation;
+			 
+			var bbox = new BoundingBoxXYZ();
+			bbox.Enabled = true;
+
+			bbox.Max = p.FirstOrDefault();
+			bbox.Min = p.LastOrDefault();
+			var tran = Transform.Identity;
+			//tran.Origin = (bbox.Max+bbox.Min)/2;
+			tran.BasisX = XYZ.BasisX;
+			tran.BasisY = XYZ.BasisY;
+			tran.BasisZ = XYZ.BasisZ;
+			bbox.Transform = tran;
+			ViewFamilyType vft
+				= new FilteredElementCollector(document)
+				.OfClass(typeof(ViewFamilyType))
+				.Cast<ViewFamilyType>()
+				.FirstOrDefault<ViewFamilyType>(y =>
+				ViewFamily.Section == y.ViewFamily);
+			return ViewSection.CreateSection(document, vft.Id, bbox);
+		}
 	}
 }
