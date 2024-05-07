@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.UI;
 using Nice3point.Revit.Toolkit.External;
 
 namespace DuNV_DATN.Commands
@@ -13,9 +14,9 @@ namespace DuNV_DATN.Commands
 		private void CreateRibbon()
 		{
 			var panel = Application.CreatePanel("Button", "NVD");
-			var tools = panel.AddPushButton<Command>("CreateColumnSection");
-			//tools.SetImage("/DuNV_DATN;component/Resources/Icons/column_16.png");
-			//tools.SetLargeImage("/DuNV_DATN;component/Resources/Icons/column_32.png");
+			PushButton tools = panel.AddPushButton<Command>("CreateColumnSection");
+			//tools.SetImage("/DuNV_DATN;component/Resources/column_16.png");
+			//tools.SetLargeImage("/DuNV_DATN;component/Resources/column_32.png");
 		}
 	}
 }

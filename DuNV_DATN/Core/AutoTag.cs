@@ -3,6 +3,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Structure;
 using HcBimUtils;
 using HcBimUtils.DocumentUtils;
+using HcBimUtils.GeometryUtils;
 using Nice3point.Revit.Toolkit.External;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace DuNV_DATN.Core
 {
 	public class AutoTag
 	{
-		public static void CreateTag(Document document,View view)
+		public static void CreateTag(Document document,View view,Element column)
 		{
 			var tran=new Transaction(document,"aa");
 			tran.Start();
@@ -27,7 +28,11 @@ namespace DuNV_DATN.Core
 			//IndependentTag tag=IndependentTag.Create(document,tagMode,AC.ActiveView.Id,new Reference(column),false,TagOrientation.Horizontal,(column.Location as LocationPoint).Point);
 			rebar.ForEach(x =>
 			{
-				IndependentTag tag = IndependentTag.Create(document, view.Id, new Reference(x), true, tagMode, TagOrientation.Vertical,GetRebarLocation(x as Rebar));
+				var ps = GetRebarTag(x as Rebar,column);
+				IndependentTag tag = IndependentTag.Create(document, view.Id, new Reference(x), true, tagMode, TagOrientation.Horizontal,GetRebarLocation(x as Rebar));
+				tag.LeaderEndCondition = LeaderEndCondition.Free;
+				tag.LeaderElbow = ps.FirstOrDefault();
+				tag.TagHeadPosition = ps.LastOrDefault();
 			});
 			tran.Commit();
 		}
@@ -43,30 +48,48 @@ namespace DuNV_DATN.Core
 		{
 			List<XYZ> result= new List<XYZ>();
 			var point= GetRebarLocation(rebar);
-			var lines = GetLines(column, AC.Document);
-			var l= lines.MinBy2(x=>point.DistancePoint2Line(x));
+			var p = GetPoint(column, point);
+			var dir =p-point;
+			var p1 = point.Add(dir * 3000.MmToFoot());
+			var p2 = point.Add(dir * 4000.MmToFoot());
+			result.Add(p1);
+			result.Add(p2);
 			return result;	
 		}
-		private static List<Line> GetLines(Element coll, Document doc)
+		private static XYZ GetPoint(Element coll,XYZ point)
 		{
 			var col = coll as FamilyInstance;
-			var oriPoint = (col.Location as LocationPoint).Point;
-			var type = doc.GetElement(col.GetTypeId()) as ElementType;
-			var w = type.LookupParameter("b").AsDouble();
-			var l = type.LookupParameter("h").AsDouble();
-			var facing = col.FacingOrientation.Normalize();
-			var hand = col.HandOrientation.Normalize();
-			var p1 = oriPoint.Add(-hand * w / 2 + -facing * l / 2);
-			var p2 = oriPoint.Add(hand * w / 2 + -facing * l / 2);
-			var p3 = p2.Add(facing * l);
-			var p4 = p1.Add(facing * l);
-			List<XYZ> xYZs = new List<XYZ>() { p1, p2, p3, p4 };
-			var Lines = new List<Line>();
-			Lines.Add(p1.CreateLine(p2));
-			Lines.Add(p2.CreateLine(p3));
-			Lines.Add(p3.CreateLine(p4));
-			Lines.Add(p4.CreateLine(p1));
-			return Lines;
+			var faces=col.GetFaces();
+			//var face = col.GetFaces().OrderBy(x => x.GetPoints().FirstOrDefault().Z).FirstOrDefault(x => (x as PlanarFace).FaceNormal.DotProduct(XYZ.BasisZ).Equals(0));
+			List<Face> faces1 = new List<Face>();
+            foreach (var item in faces)
+            {
+                if((item as PlanarFace).FaceNormal.DotProduct(XYZ.BasisZ).Equals(0))
+				{
+					faces1.Add(item);
+				}
+            }
+			var ps= new List<XYZ>();
+			faces1.ForEach(x =>
+			{
+				ps.Add(GetProjectPoint(x as PlanarFace,point));
+			});
+			return ps.MinBy2(x => (x - point).GetLength());
+        }
+		public static double GetSignedDistance(PlanarFace plane, XYZ point)
+		{
+			var v = point - plane.Origin;
+			return Math.Abs(GeometryUtils.DotMatrix(plane.FaceNormal, v));
+		}
+		public static bool IsPointInPlane(PlanarFace plane, XYZ point)
+		{
+			return GeometryUtils.IsEqual(GetSignedDistance(plane, point), 0);
+		}
+		public static XYZ GetProjectPoint(PlanarFace plane, XYZ point)
+		{
+			var d = GetSignedDistance(plane, point);
+			var q = GeometryUtils.AddXYZ(point, GeometryUtils.MultiplyVector(plane.FaceNormal, d));
+			return IsPointInPlane(plane, q) ? q : GeometryUtils.AddXYZ(point, GeometryUtils.MultiplyVector(plane.FaceNormal, -d));
 		}
 	}
 }

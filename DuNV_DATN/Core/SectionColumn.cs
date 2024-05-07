@@ -52,7 +52,7 @@ namespace DuNV_DATN.Core
 				.FirstOrDefault<ViewFamilyType>(y =>
 				ViewFamily.Section == y.ViewFamily);
 			var aa= ViewSection.CreateSection(document, vft.Id, bbox);
-			aa.Scale = 1;
+			aa.Scale = scale;
 			return aa;
 		}
 		private static List<XYZ> GetBou(XYZ ori,double height,double width,double ele,XYZ dir)

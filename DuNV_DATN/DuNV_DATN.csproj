@@ -56,8 +56,8 @@
         <StartArguments>/language ENG</StartArguments>
     </PropertyGroup>
     <ItemGroup>
-      <None Remove="Resources\Icons\column_16.png" />
-      <None Remove="Resources\Icons\column_32.png" />
+      <None Remove="Resources\column_16.png" />
+      <None Remove="Resources\column_32.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -80,10 +80,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Resources\Icons\column_16.png">
+      <Resource Include="Resources\column_16.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
-      <Resource Include="Resources\Icons\column_32.png">
+      <Resource Include="Resources\column_32.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>
@@ -106,7 +106,9 @@
             <AddinFiles Include="$(RootDir)**\*.*" />
         </ItemGroup>
 
-        <!--<Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" />-->
+        <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" Condition="$(Configuration.Contains('Debug'))"/>
+		<Copy SourceFiles="@(CompileFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\$(TargetName)" Condition="$(Configuration.Contains('Debug'))" />
+		<Copy SourceFiles="@(RootItem)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)" Condition="$(Configuration.Contains('Debug'))" />
     </Target>
 
     <Target Name="DeleteFiles" AfterTargets="Clean">
