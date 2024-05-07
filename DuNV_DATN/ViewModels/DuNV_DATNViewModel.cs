@@ -118,9 +118,10 @@ namespace DuNV_DATN.ViewModels
 			using (Transaction ts=new Transaction(AC.Document,"aa"))
 			{
 				ts.Start();
-				elements.Add(SectionColumn.NewSection(AC.Document, Column,1));
-				elements.Add(SectionColumn.NewSection(AC.Document, Column,0));
-				elements.Add(SectionColumn.NewSection(AC.Document, Column, 2));
+				elements.Add(SectionColumn.NewSection(AC.Document, Column,1,ViewScale(SelectedScale)));
+				elements.Add(SectionColumn.NewSection(AC.Document, Column,0, ViewScale(SelectedScale)));
+				elements.Add(SectionColumn.NewSection(AC.Document, Column, 2, ViewScale(SelectedScale)));
+				//SectionColumn.NewSectionDoc(AC.Document, Column, 3);
 				ts.Commit();
 			}
 			elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); });
@@ -138,6 +139,12 @@ namespace DuNV_DATN.ViewModels
 		public void ButtonCancel()
 		{
 			MainView?.Close();
+		}
+		private int ViewScale(string s)
+		{
+			string[] chuoi = null;
+			chuoi = s.Split(':');
+			return int.Parse(chuoi.LastOrDefault());
 		}
 		#endregion
 	}
