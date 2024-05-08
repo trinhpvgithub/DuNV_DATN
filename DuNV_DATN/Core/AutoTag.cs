@@ -4,6 +4,7 @@ using Autodesk.Revit.DB.Structure;
 using HcBimUtils;
 using HcBimUtils.DocumentUtils;
 using HcBimUtils.GeometryUtils;
+using HcBimUtils.RebarUtils;
 using Nice3point.Revit.Toolkit.External;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace DuNV_DATN.Core
 				var ps = GetRebarTag(x as Rebar,column);
 				IndependentTag tag = IndependentTag.Create(document, view.Id, new Reference(x), true, tagMode, TagOrientation.Horizontal,GetRebarLocation(x as Rebar));
 				tag.LeaderEndCondition = LeaderEndCondition.Free;
-				tag.LeaderElbow = ps.FirstOrDefault();
+				tag.SetLeaderElbow(ps.FirstOrDefault());
 				tag.TagHeadPosition = ps.LastOrDefault();
 			});
 			tran.Commit();

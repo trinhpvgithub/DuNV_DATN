@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using Nice3point.Revit.Toolkit.External;
+using System.Windows.Media.Imaging;
 
 namespace DuNV_DATN.Commands
 {
@@ -15,8 +16,8 @@ namespace DuNV_DATN.Commands
 		{
 			var panel = Application.CreatePanel("Button", "NVD");
 			PushButton tools = panel.AddPushButton<Command>("CreateColumnSection");
-			//tools.SetImage("/DuNV_DATN;component/Resources/column_16.png");
-			//tools.SetLargeImage("/DuNV_DATN;component/Resources/column_32.png");
+			tools.Image = new BitmapImage(new Uri("/DuNV_DATN;component/Resources/column_16.png", UriKind.RelativeOrAbsolute));
+			tools.LargeImage= new BitmapImage(new Uri("/DuNV_DATN;component/Resources/column_32.png", UriKind.RelativeOrAbsolute));
 		}
 	}
 }
