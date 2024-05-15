@@ -15,8 +15,8 @@ namespace DuNV_DATN.Commands
 		{
 			var panel = Application.CreatePanel("Button", "NVD");
 			PushButton tools = panel.AddPushButton<Command>("CreateColumnSection");
-			//tools.SetImage("/DuNV_DATN;component/Resources/column_16.png");
-			//tools.SetLargeImage("/DuNV_DATN;component/Resources/column_32.png");
+			tools.SetImage("/DuNV_DATN;component/Resources/column_16.png");
+			tools.SetLargeImage("/DuNV_DATN;component/Resources/column_32.png");
 		}
 	}
 }

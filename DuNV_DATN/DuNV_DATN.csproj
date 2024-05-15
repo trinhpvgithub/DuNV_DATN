@@ -106,9 +106,9 @@
             <AddinFiles Include="$(RootDir)**\*.*" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" Condition="$(Configuration.Contains('Debug'))"/>
+        <!--<Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\%(RecursiveDir)" Condition="$(Configuration.Contains('Debug'))"/>
 		<Copy SourceFiles="@(CompileFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)\$(TargetName)" Condition="$(Configuration.Contains('Debug'))" />
-		<Copy SourceFiles="@(RootItem)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)" Condition="$(Configuration.Contains('Debug'))" />
+		<Copy SourceFiles="@(RootItem)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)" Condition="$(Configuration.Contains('Debug'))" />-->
     </Target>
 
     <Target Name="DeleteFiles" AfterTargets="Clean">

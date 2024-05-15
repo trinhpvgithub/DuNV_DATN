@@ -31,11 +31,13 @@ namespace DuNV_DATN.Core
 				var width = (SHEET.get_BoundingBox(null).Max.X - SHEET.get_BoundingBox(null).Min.X).MmToFoot();
 				var height = (SHEET.get_BoundingBox(null).Max.Y - SHEET.get_BoundingBox(null).Min.Y).MmToFoot();
 
-				if (views.Count==3)
+				if (views.Count==5)
 				{
-					Viewport.Create(document, SHEET.Id, views[0].Id, new XYZ(location.U, location.V+height, 0));
-					Viewport.Create(document, SHEET.Id, views[1].Id, new XYZ(location.U, location.V, 0));
-					Viewport.Create(document, SHEET.Id, views[2].Id, new XYZ(location.U, location.V-height, 0));
+					Viewport.Create(document, SHEET.Id, views[0].Id, new XYZ(location.U+width/2, location.V+height, 0));
+					Viewport.Create(document, SHEET.Id, views[1].Id, new XYZ(location.U+width/2, location.V, 0));
+					Viewport.Create(document, SHEET.Id, views[2].Id, new XYZ(location.U + width/2, location.V-height, 0));
+					Viewport.Create(document, SHEET.Id, views[3].Id, new XYZ(location.U - width, location.V+height, 0));
+					Viewport.Create(document, SHEET.Id, views[4].Id, new XYZ(location.U - width, location.V-height/2, 0));
 				}
 				else
 				{

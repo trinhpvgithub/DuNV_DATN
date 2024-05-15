@@ -87,7 +87,7 @@ namespace DuNV_DATN.ViewModels
 			   .Cast<View>()
 			   .Where(x => x.IsTemplate).ToList();
 			SelectedViewTemplate = ViewTemplate.FirstOrDefault();
-			Scale = new List<string> { "1:50", "1:100", "1:150", "1:200" };
+			Scale = new List<string> { "1:25", "1:50", "1:100", "1:150", "1:200" };
 			SelectedScale = Scale.FirstOrDefault();
 			Section = new List<int> { 2, 3 };
 			SeclectSection = Section.FirstOrDefault();
@@ -127,10 +127,26 @@ namespace DuNV_DATN.ViewModels
 			elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); });
 			elements.ForEach(x =>
 			{
-				AutoTag.CreateTag(AC.Document, x as View,Column);
+				AutoTag.CreateHorTag(AC.Document, x as View, Column);
 
 			});
+			List<Element> mcDoc = new List<Element>();
+			using (Transaction ts = new Transaction(AC.Document, "aa"))
+			{
+				ts.Start();
+				mcDoc.Add(SectionColumn.NewSectionDoc(AC.Document, Column,ViewScale(SelectedScale), false));
+				mcDoc.Add(SectionColumn.NewSectionDoc(AC.Document, Column, ViewScale(SelectedScale), true));
+
+				ts.Commit();
+			}
+			//elements.ForEach(element => { Function.Dim(element as View, SelectedScale, AC.Document); });
+			mcDoc.ForEach(x =>
+			{
+				AutoTag.CreateVerTag(AC.Document, x as View, Column);
+			});
+			elements.AddRange(mcDoc);
 			CreateSheet.NewSheet(AC.Document, SelectedTitleBlock.Id, elements, "MC-cot");
+			MainView?.Close();
 		}
 		public void ShowView()
 		{
