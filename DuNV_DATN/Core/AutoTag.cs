@@ -4,6 +4,7 @@ using Autodesk.Revit.DB.Structure;
 using HcBimUtils;
 using HcBimUtils.DocumentUtils;
 using HcBimUtils.GeometryUtils;
+using HcBimUtils.RebarUtils;
 using Nice3point.Revit.Toolkit.External;
 using System;
 using System.Collections.Generic;
